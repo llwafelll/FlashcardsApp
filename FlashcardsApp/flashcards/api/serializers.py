@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from models import User, Deck, Card, Session
+from .models import User, Deck, Card, Session
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'name', 'surname', 'age', 'date_created',
-                  'date_visited', 'date_updated', 'color', 'starred')
+        fields = ('id', 'name', 'surname', 'age', 'email',
+                  'date_added', 'number_decks', 'number_cards')
 
 
 class DeckSerializer(serializers.ModelSerializer):

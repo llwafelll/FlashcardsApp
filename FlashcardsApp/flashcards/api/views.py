@@ -1,4 +1,4 @@
-from django.http import HttpRequest
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import generics
 
@@ -8,7 +8,7 @@ from .models import User, Card, Deck, Session
 
 # Create your views here.
 def index(request):
-    return HttpRequest("This is API.")
+    return HttpResponse("This is API.")
 
 
 class UserView(generics.CreateAPIView):
