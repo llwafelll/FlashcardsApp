@@ -33,6 +33,17 @@ class CardGetSerializer(serializers.ModelSerializer):
                   'date_created', 'last_visited', 'last_updated', 'state')
 
 
+class CardPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Card
+        fields = ('front', 'back', 'color', 'starred', 'suspended')
+
+
+class CardPatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Card
+        fields = ('front', 'back', 'color', 'starred', 'suspended')
+
 class SessionSerilizer(serializers.ModelSerializer):
     class Meta:
         model = Session

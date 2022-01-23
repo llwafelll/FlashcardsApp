@@ -38,7 +38,7 @@ class Card(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     state = models.CharField(max_length=50, default='Unrevealed') # Good/Bad/Unrevealed
 
-    deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
+    deck = models.ForeignKey(Deck, on_delete=models.CASCADE, related_name='cards')
 
 
 class Session(models.Model):
