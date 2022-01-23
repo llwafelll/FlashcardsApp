@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.views import APIView
@@ -7,7 +8,8 @@ from rest_framework.response import Response
 from .serializers import (UserSerializer, CardGetSerializer,
                           DeckGetSerializer, SessionSerilizer,
                           DeckPostSerializer, DeckPutSerializer,
-                          CardGetSerializer)
+                          CardGetSerializer, CardPostSerializer,
+                          CardPatchSerializer)
 from .models import User, Card, Deck, Session
 
 # Create your views here.
@@ -103,7 +105,7 @@ class CardView(APIView):
 
 class DeckCardView(APIView):
     def get(self, request, format=None, *args, **kwargs):
-        deck_queryset = Deck.objects.filter(id=kwargs['name'])
+        deck_queryset = Deck.objects.filter(name=kwargs['name'])
         card_queryset = Card.objects.filter(id=kwargs['id'])
 
         if deck_queryset.count() == 1 and card_queryset.count() == 1:
@@ -115,6 +117,93 @@ class DeckCardView(APIView):
         return Response({"No data": "Requested card does not exist in given deck"},
                         status=status.HTTP_400_BAD_REQUEST)
 
+    def patch(self, request, format=None, *args, **kwargs):
+        try:
+            requested_deck = Deck.objects.get(name=kwargs['name'])
+        except ObjectDoesNotExist:
+            return Response({"No data": "Deck not found."},
+                            status=status.HTTP_404_NOT_FOUND)
+            
+        try:
+            requested_card = requested_deck.cards.get(id=kwargs['id'])
+        except ObjectDoesNotExist:
+            return Response({"No data": "No card in specified deck."},
+                            status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = CardPatchSerializer(requested_card, data=request.data,
+                                         partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            # return JsonResponse(data=serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data,
+                            status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, format=None, *args, **kwargs):
+        try:
+            requested_deck = Deck.objects.get(name=kwargs['name'])
+        except ObjectDoesNotExist:
+            return Response({"No data": "Deck not found."},
+                            status=status.HTTP_404_NOT_FOUND)
+            
+        try:
+            requested_card = requested_deck.cards.get(id=kwargs['id'])
+        except ObjectDoesNotExist:
+            return Response({"No data": "No card in specified deck."},
+                            status=status.HTTP_404_NOT_FOUND)
+        
+        requested_card.delete()
+        return Response({"deleted": "Card deleted."},
+                        status=status.HTTP_200_OK)
+        
+        
+class DeckCardsView(APIView):
+    def get(self, request, format=None, *args, **kwargs):
+        deck_queryset = Deck.objects.filter(name=kwargs['name'])
+
+        if deck_queryset.count() == 1:
+            requested_deck = deck_queryset[0]
+            card_queryset = requested_deck.cards.all()
+            data = CardGetSerializer(card_queryset, many=True).data
+
+            return Response(data, status=status.HTTP_200_OK)
+        
+        return Response({"No data": "Requested deck does not exist"})
+        
+    def post(self, request, format=None, *args, **kwargs):
+        serializer = CardPostSerializer(data=request.data)
+        deck_queryset = Deck.objects.filter(name=kwargs['name'])
+        if serializer.is_valid() and deck_queryset.count() == 1:
+            requested_deck = deck_queryset[0]
+
+            front = serializer.data.get('front')
+            back = serializer.data.get('back')
+            color = serializer.data.get('color')
+            starred = serializer.data.get('starred')
+            suspended = serializer.data.get('suspended')
+            
+            card = Card(front=front, back=back, color=color, starred=starred,
+                        suspended=suspended, deck=requested_deck)
+            card.save()
+
+            return Response(CardGetSerializer(card).data, status=status.HTTP_200_OK)
+        
+        return Response({"Object not created": "Createtion aborded."})
+    
+    def delete(self, request, format=None, *args, **kwargs):
+        deck_queryset = Deck.objects.filter(name=kwargs['name'])
+        if deck_queryset.count() == 1:
+            requested_deck = deck_queryset[0]
+            deleted_cards = requested_deck.cards.all().delete()
+
+            return Response(deleted_cards, status=status.HTTP_200_OK)
+        
+        return Response({"No data": "There is no single card in any deck"},
+                        status=status.HTTP_400_BAD_REQUEST)
+            
 
 class SessionView(generics.CreateAPIView):
     queryset = Session.objects.all()
