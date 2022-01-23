@@ -9,18 +9,28 @@ class UserSerializer(serializers.ModelSerializer):
                   'date_added', 'number_decks', 'number_cards')
 
 
-class DeckSerializer(serializers.ModelSerializer):
+class DeckGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
-        fields = ('id', 'name', 'number_cards', 'date_created', 'last_visited',
+        fields = ('name', 'number_cards', 'date_created', 'last_visited',
                   'last_updated', 'color', 'starred')
 
+class DeckPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Deck
+        fields = ('name', 'color', 'starred')
 
-class CardSerializer(serializers.ModelSerializer):
+class DeckPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Deck
+        fields = ('color', 'starred')
+
+
+class CardGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = ('id', 'front', 'back', 'color', 'starred', 'suspended', 
-                  'date_created', 'date_visited', 'last_updated', 'state')
+                  'date_created', 'last_visited', 'last_updated', 'state')
 
 
 class SessionSerilizer(serializers.ModelSerializer):

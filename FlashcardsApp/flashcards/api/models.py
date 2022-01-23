@@ -1,5 +1,7 @@
 from ast import Starred
+from re import T
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class User(models.Model):
@@ -13,13 +15,16 @@ class User(models.Model):
 
 
 class Deck(models.Model):
-    name = models.CharField(max_length=50)
-    number_cards = models.IntegerField()
+    name = models.CharField(max_length=50, unique=True, null=False,
+                            primary_key=True, default="[New deck]")
+    number_cards = models.IntegerField(default=0, editable=False)
     date_created = models.DateTimeField(auto_now_add=True)
-    last_visited = models.DateTimeField()
-    last_updated = models.DateTimeField()
-    color = models.CharField(max_length=10)
+    last_visited = models.DateTimeField(null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True)
+    color = models.CharField(max_length=10, null=True)
     starred = models.BooleanField(default=False)
+
+    # user = models.ForeignKey(User, on_delete=models.CASCA, null=Trueue)
 
 
 class Card(models.Model):
@@ -29,9 +34,11 @@ class Card(models.Model):
     starred = models.BooleanField(default=False)
     suspended = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
-    last_visited = models.DateTimeField()
-    last_updated = models.DateTimeField()
+    last_visited = models.DateTimeField(null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True)
     state = models.CharField(max_length=50, default='Unrevealed') # Good/Bad/Unrevealed
+
+    deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
 
 
 class Session(models.Model):
