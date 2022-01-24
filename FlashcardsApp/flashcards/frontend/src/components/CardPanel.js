@@ -46,16 +46,16 @@ export default function CardPanel() {
   }, []);
 
   function handleSubmit(e) {
-      e.preventDefault();
-      const pendingCard = {front, back, color, starred, suspended}
-      console.log(card);
-      console.log(pendingCard);
+    e.preventDefault();
+    const pendingCard = { front, back, color, starred, suspended };
+    console.log(card);
+    console.log(pendingCard);
 
-      fetch(`/api/deck/${name}/card/${id}`, {
-          method: 'PATCH',
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(pendingCard)
-      })
+    fetch(`/api/deck/${name}/card/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pendingCard),
+    });
   }
 
   return (
@@ -100,14 +100,28 @@ export default function CardPanel() {
         <FormControlLabel
           label="starred"
           control={
-            <FormControlLabel control={<Checkbox checked={starred} onChange={(e) => setStarred(e.target.checked)} />} />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={starred}
+                  onChange={(e) => setStarred(e.target.checked)}
+                />
+              }
+            />
           }
         />
         <br />
         <FormControlLabel
           label="suspended"
           control={
-            <FormControlLabel control={<Checkbox checked={suspended} onChange={(e) => setSuspended(e.target.checked)} />} />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={suspended}
+                  onChange={(e) => setSuspended(e.target.checked)}
+                />
+              }
+            />
           }
         />
 
