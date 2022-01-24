@@ -1,15 +1,24 @@
 import  React, { Component } from "react";
 import { render } from "react-dom";
+import { 
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link,
+    Redirect,
+} from "react-router-dom";
 
-export default class App extends Component {
-    constructor(props) {
-        super(props);
-    }
+import DecksPanel from "./DecksPanel"
 
-    render() {
-        return <h1>Testing React code</h1>;
-    }
+export default function App() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<DecksPanel />} />
+            </Routes>
+        </Router>
+    );
 }
 
-const appDiv = document.getElementById("app");
-render(<App />, appDiv);
+// const appDiv = document.getElementById("app");
+// render(<App />, appDiv);
