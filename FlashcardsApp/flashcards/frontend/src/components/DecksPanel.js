@@ -32,8 +32,8 @@ export default function DecksPanel({ children }) {
         {decks && decks.map((deck) => (
           <ListItem key={deck.name} button>
             <ListItemText primary={deck.name} secondary={deck.number_cards} />
-            <Button color="primary">Learn</Button>
-            <Button color="secondary" onClick={() => navigate(`/deck/${deck.name}`)}>
+            <Button color="primary" variant="contained">Learn</Button>
+            <Button color="secondary" variant="contained" onClick={() => navigate(`/deck/${deck.name}`)}>
               Manage
             </Button>
           </ListItem>
