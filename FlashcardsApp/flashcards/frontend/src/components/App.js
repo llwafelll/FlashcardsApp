@@ -9,12 +9,14 @@ import {
 } from "react-router-dom";
 
 import DecksPanel from "./DecksPanel"
+import DeckPanel from "./DeckPanel"
 
 export default function App() {
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<DecksPanel />} />
+                <Route path="/deck/:name" element={<DeckPanel />} />
             </Routes>
         </Router>
     );

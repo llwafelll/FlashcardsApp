@@ -9,19 +9,19 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react"
 
-export default function DecksPanelv2({ children }) {
+export default function DecksPanel({ children }) {
   const navigate = useNavigate();
 
 //   use state zwraca 2 argumenty - pierwszy to value drugi to funkcja ktora go
 //   zniemia (jest zdefiniowana od razu)
-  const [realitems, setRealitems] = useState(null);
+  const [decks, setDecks] = useState(null);
 
   useEffect(() => {
       fetch("/api/deck/")
       .then(response => response.json())
       .then(data => {
           console.log(data);
-          setRealitems(data);
+          setDecks(data);
       })
   }, [])
 
@@ -29,11 +29,11 @@ export default function DecksPanelv2({ children }) {
     <div>
       <h3>Placeholder</h3>
       <List>
-        {realitems && realitems.map((item) => (
-          <ListItem key={item.name} button>
-            <ListItemText primary={item.name} secondary={item.number_cards} />
+        {decks && decks.map((deck) => (
+          <ListItem key={deck.name} button>
+            <ListItemText primary={deck.name} secondary={deck.number_cards} />
             <Button color="primary">Learn</Button>
-            <Button color="secondary" onClick={() => navigate("/api")}>
+            <Button color="secondary" onClick={() => navigate(`/deck/${deck.name}`)}>
               Manage
             </Button>
           </ListItem>
