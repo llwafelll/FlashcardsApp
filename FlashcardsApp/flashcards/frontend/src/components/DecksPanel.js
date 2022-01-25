@@ -4,6 +4,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Typography,
   ListButton,
 } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +28,9 @@ export default function DecksPanel({ children }) {
 
   return (
     <div>
-      <h3>Placeholder</h3>
+      <Typography variant="h4" gutterBottom component="div">
+        Decks
+      </Typography>
       <List>
         {decks &&
           decks.map((deck) => (
@@ -42,6 +45,13 @@ export default function DecksPanel({ children }) {
                 onClick={() => navigate(`/deck/${deck.name}`)}
               >
                 Manage
+              </Button>
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={() => console.log("implement deletion")}
+              >
+                Delete
               </Button>
             </ListItem>
           ))}

@@ -156,6 +156,8 @@ class DeckCardView(APIView):
                             status=status.HTTP_404_NOT_FOUND)
         
         requested_card.delete()
+        requested_deck.number_cards -= 1
+        requested_deck.save()
         return Response({"deleted": "Card deleted."},
                         status=status.HTTP_200_OK)
         
@@ -178,6 +180,7 @@ class DeckCardsView(APIView):
         deck_queryset = Deck.objects.filter(name=kwargs['name'])
         if serializer.is_valid() and deck_queryset.count() == 1:
             requested_deck = deck_queryset[0]
+            requested_deck.number_cards += 1
 
             front = serializer.data.get('front')
             back = serializer.data.get('back')
@@ -188,6 +191,7 @@ class DeckCardsView(APIView):
             card = Card(front=front, back=back, color=color, starred=starred,
                         suspended=suspended, deck=requested_deck)
             card.save()
+            requested_deck.save()
 
             return Response(CardGetSerializer(card).data, status=status.HTTP_200_OK)
         
@@ -197,6 +201,7 @@ class DeckCardsView(APIView):
         deck_queryset = Deck.objects.filter(name=kwargs['name'])
         if deck_queryset.count() == 1:
             requested_deck = deck_queryset[0]
+
             deleted_cards = requested_deck.cards.all().delete()
 
             return Response(deleted_cards, status=status.HTTP_200_OK)

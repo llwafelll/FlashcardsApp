@@ -11,6 +11,7 @@ import {
 import DecksPanel from "./DecksPanel"
 import DeckPanel from "./DeckPanel"
 import CardPanel from "./CardPanel"
+import CardAddPanel from "./CardAddPanel"
 
 export default function App() {
     return (
@@ -20,6 +21,7 @@ export default function App() {
                     <Route path="/" element={<DecksPanel />} />
                     <Route path="/deck/:name" element={<DeckPanel />} />
                     <Route path="/deck/:name/card/:id" element={<CardPanel /> } />
+                    <Route path="/deck/:name/card" element={<CardAddPanel /> } />
                 </Routes>
             </Router>
         </div>
