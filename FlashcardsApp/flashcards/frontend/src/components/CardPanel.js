@@ -10,6 +10,7 @@ import {
   InputLabel,
   Checkbox,
   FormControlLabel,
+  Grid,
   List,
   ListItem,
   ListItemText,
@@ -61,81 +62,104 @@ export default function CardPanel() {
   return (
     card && (
       <form onSubmit={handleSubmit} noValidate autoComplete="off">
-        <TextField
-          id="outlined-basic"
-          label="Front"
-          variant="outlined"
-          value={front}
-          onChange={(e) => setFront(e.target.value)}
-          multiline
-          margin="normal"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          label="Back"
-          variant="outlined"
-          value={back}
-          onChange={(e) => setBack(e.target.value)}
-          multiline
-          margin="normal"
-        />
-        <br />
-        <FormControl fullWidth>
-          <InputLabel id="card-color-label">color</InputLabel>
-          <Select
-            labelId="card-color-label"
-            id="select-color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-          >
-            <MenuItem value={"red"}>red</MenuItem>
-            <MenuItem value={"green"}>green</MenuItem>
-            <MenuItem value={"yellow"}>yellow</MenuItem>
-            <MenuItem value={"blue"}>blue</MenuItem>
-          </Select>
-        </FormControl>
-        <br />
+        <Grid container spacing={2} spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              id="outlined-basic"
+              label="Front"
+              variant="outlined"
+              value={front}
+              onChange={(e) => setFront(e.target.value)}
+              multiline
+              fullWidth
+              margin="normal"
+            />
+          </Grid>
 
-        <FormControlLabel
-          label="starred"
-          control={
+          <Grid item xs={12}>
+            <TextField
+              id="outlined-basic"
+              label="Back"
+              variant="outlined"
+              value={back}
+              onChange={(e) => setBack(e.target.value)}
+              multiline
+              fullWidth
+              margin="normal"
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <FormControl fullWidth>
+              <InputLabel id="card-color-label">color</InputLabel>
+              <Select
+                labelId="card-color-label"
+                id="select-color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+              >
+                <MenuItem value={"red"}>red</MenuItem>
+                <MenuItem value={"green"}>green</MenuItem>
+                <MenuItem value={"yellow"}>yellow</MenuItem>
+                <MenuItem value={"blue"}>blue</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={2} />
+
+          <Grid item xs={3}>
             <FormControlLabel
+              label="starred"
               control={
-                <Checkbox
-                  checked={starred}
-                  onChange={(e) => setStarred(e.target.checked)}
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={starred}
+                      onChange={(e) => setStarred(e.target.checked)}
+                    />
+                  }
                 />
               }
             />
-          }
-        />
-        <br />
-        <FormControlLabel
-          label="suspended"
-          control={
+          </Grid>
+
+          <Grid item xs={3}>
             <FormControlLabel
+              label="suspended"
               control={
-                <Checkbox
-                  checked={suspended}
-                  onChange={(e) => setSuspended(e.target.checked)}
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={suspended}
+                      onChange={(e) => setSuspended(e.target.checked)}
+                    />
+                  }
                 />
               }
             />
-          }
-        />
+          </Grid>
 
-        <br />
-        <Button
-          color="secondary"
-          variant="outlined"
-          onClick={() => navigate(`../deck/${name}`)}
-        >
-          Back
-        </Button>
-        <Button type="submit" color="primary" variant="contained">
-          Save
-        </Button>
+          <Grid item xs={12}>
+            <Grid container spacing={2} spacing={2} justifyContent="flex-end">
+              <Grid item xs={2}>
+                <Button
+                  className="test"
+                  color="secondary"
+                  variant="outlined"
+                  onClick={() => navigate(`../deck/${name}`)}
+                >
+                  Back
+                </Button>
+              </Grid>
+
+              <Grid item xs={2}>
+                <Button type="submit" color="primary" variant="contained">
+                  Save
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </form>
     )
   );

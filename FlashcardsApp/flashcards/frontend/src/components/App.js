@@ -14,13 +14,15 @@ import CardPanel from "./CardPanel"
 
 export default function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<DecksPanel />} />
-                <Route path="/deck/:name" element={<DeckPanel />} />
-                <Route path="/deck/:name/card/:id" element={<CardPanel /> } />
-            </Routes>
-        </Router>
+        <div className="center">
+            <Router>
+                <Routes>
+                    <Route path="/" element={<DecksPanel />} />
+                    <Route path="/deck/:name" element={<DeckPanel />} />
+                    <Route path="/deck/:name/card/:id" element={<CardPanel /> } />
+                </Routes>
+            </Router>
+        </div>
     );
 }
 

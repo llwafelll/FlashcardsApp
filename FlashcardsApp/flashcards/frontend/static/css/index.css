@@ -1,4 +1,31 @@
-.Button {
-    background-color: aqua;
-    color: aqua;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    background-image: url("../images/background-image.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#main {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+/* #app {
+    width: 100%;
+    height: 100%;
+} */
+
+.center {
+    position: absolute;
+    width: 30%;
+    left: 50%;
+    top: 10%;
+    transform: translate(-50%, 0%);
 }
