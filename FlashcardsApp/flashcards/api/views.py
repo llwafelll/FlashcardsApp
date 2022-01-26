@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .serializers import (UserSerializer, CardGetSerializer,
                           DeckGetSerializer, SessionSerilizer,
-                          DeckPostSerializer, DeckPutSerializer,
+                          DeckPostSerializer, DeckPatchSerializer,
                           CardGetSerializer, CardPostSerializer,
                           CardPatchSerializer)
 from .models import User, Card, Deck, Session
@@ -54,9 +54,26 @@ class DeckView(APIView):
         
         return Response({}, status=status.HTTP_404_NOT_FOUND)
     
-    def put(self, request, format=None, *args, **kwargs):
+    def patch(self, request, format=None, *args, **kwargs):
+        try:
+            requested_deck = Deck.objects.get(name=kwargs['name'])
+        except ObjectDoesNotExist:
+            return Response({"No data": "Deck not found"},
+                            status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = DeckPatchSerializer(requested_deck, data=request.data,
+                                         partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response(DeckGetSerializer(requested_deck).data,
+                            status=status.HTTP_202_ACCEPTED)
+        
+        return Response({}, status=status.HTTP_404_NOT_FOUND)
+
         queryset = Deck.objects.filter(name=kwargs['name'])
-        serializer = DeckPutSerializer(data=request.data)
+        serializer = DeckPatchSerializer(data=request.data)
 
         if (queryset.count() == 1) and serializer.is_valid():
             requested_deck = queryset[0]

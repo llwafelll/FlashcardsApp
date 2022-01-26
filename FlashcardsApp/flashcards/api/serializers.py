@@ -20,10 +20,10 @@ class DeckPostSerializer(serializers.ModelSerializer):
         model = Deck
         fields = ('name', 'color', 'starred')
 
-class DeckPutSerializer(serializers.ModelSerializer):
+class DeckPatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
-        fields = ('color', 'starred')
+        fields = ('name', 'color', 'starred')
 
 
 class CardGetSerializer(serializers.ModelSerializer):

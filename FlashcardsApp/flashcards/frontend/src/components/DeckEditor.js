@@ -22,27 +22,42 @@ import {
 export default function CardAddPanel() {
   const navigate = useNavigate();
 
-  const [card, setCard] = useState(null);
+  const [deck, setDeck] = useState(null);
   const [name, setName] = useState("");
   const [color, setColor] = useState("nocolor");
   const [starred, setStarred] = useState(false);
 
-  const [age, setAge] = React.useState("");
-  // return <p>Hello</p>;
+  const { Dname } = useParams(null);
 
+  function getDeck() {
+      fetch(`/api/deck/${Dname}`)
+      .then((response) => response.json())
+      .then((data) => {
+          setDeck(data);
+          setName(data.name);
+          setColor(data.color);
+          setStarred(data.starred);
+      })
+  }
+
+  useEffect(() => {
+      getDeck();
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
-    const pendingCard = { name, color, starred };
+    const pendingDeck = { name, color, starred };
+    console.log(JSON.stringify(pendingDeck))
 
-    fetch(`/api/deck/`, {
-      method: "POST",
+    fetch(`/api/deck/${Dname}`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(pendingCard),
+      body: JSON.stringify(pendingDeck),
     });
   }
 
   return (
+    deck && (
     <form onSubmit={handleSubmit} noValidate autoComplete="off">
       <Grid container spacing={2} spacing={2}>
         <Grid item xs={12}>
@@ -105,12 +120,13 @@ export default function CardAddPanel() {
 
             <Grid item xs={2}>
               <Button type="submit" color="primary" variant="contained">
-                Add
+                Save
               </Button>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
     </form>
+    )
   );
 }

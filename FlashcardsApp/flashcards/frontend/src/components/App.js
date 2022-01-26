@@ -13,6 +13,7 @@ import DeckPanel from "./DeckPanel"
 import CardPanel from "./CardPanel"
 import CardAddPanel from "./CardAddPanel"
 import DeckAddPanel from "./DeckAddPanel"
+import DeckEditor from "./DeckEditor"
 
 export default function App() {
     return (
@@ -24,6 +25,7 @@ export default function App() {
                     <Route path="/deck/:name/card/:id" element={<CardPanel /> } />
                     <Route path="/deck/:name/card" element={<CardAddPanel /> } />
                     <Route path="/deck" element={<DeckAddPanel /> } />
+                    <Route path="/deck/:Dname/edit" element={<DeckEditor /> } />
                 </Routes>
             </Router>
         </div>

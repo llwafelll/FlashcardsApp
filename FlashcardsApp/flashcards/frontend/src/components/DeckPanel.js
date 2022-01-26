@@ -40,6 +40,13 @@ export default function DeckPanel() {
       <Grid item xs={12}>
         <Button
           variant="contained"
+          color="primary"
+          onClick={() => navigate(`/deck/${name}/edit`)}
+        >
+          Edit deck
+        </Button>
+        <Button
+          variant="contained"
           color="secondary"
           onClick={() => navigate(`/deck/${name}/card`)}
         >
