@@ -21,14 +21,11 @@ import {
 
 export default function CardAddPanel() {
   const navigate = useNavigate();
-  const { name } = useParams(null);
 
   const [card, setCard] = useState(null);
-  const [front, setFront] = useState("");
-  const [back, setBack] = useState("");
-  const [color, setColor] = useState("nocolor");
+  const [name, setName] = useState("");
+  const [color, setColor] = useState("");
   const [starred, setStarred] = useState(false);
-  const [suspended, setSuspended] = useState(false);
 
   const [age, setAge] = React.useState("");
   // return <p>Hello</p>;
@@ -36,9 +33,9 @@ export default function CardAddPanel() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const pendingCard = { front, back, color, starred, suspended };
+    const pendingCard = { name, color, starred };
 
-    fetch(`/api/deck/${name}/card`, {
+    fetch(`/api/deck/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(pendingCard),
@@ -51,23 +48,10 @@ export default function CardAddPanel() {
         <Grid item xs={12}>
           <TextField
             id="outlined-basic"
-            label="Front"
+            label="Deck's name"
             variant="outlined"
-            value={front}
-            onChange={(e) => setFront(e.target.value)}
-            multiline
-            fullWidth
-            margin="normal"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            id="outlined-basic"
-            label="Back"
-            variant="outlined"
-            value={back}
-            onChange={(e) => setBack(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             multiline
             fullWidth
             margin="normal"
@@ -80,6 +64,7 @@ export default function CardAddPanel() {
             <Select
               labelId="card-color-label"
               id="select-color"
+              value={color}
               onChange={(e) => setColor(e.target.value)}
             >
               <MenuItem value={"red"}>red</MenuItem>
@@ -107,30 +92,13 @@ export default function CardAddPanel() {
           />
         </Grid>
 
-        <Grid item xs={3}>
-          <FormControlLabel
-            label="suspended"
-            control={
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={suspended}
-                    onChange={(e) => setSuspended(e.target.checked)}
-                  />
-                }
-              />
-            }
-          />
-        </Grid>
-
         <Grid item xs={12}>
           <Grid container spacing={2} spacing={2} justifyContent="flex-end">
             <Grid item xs={2}>
               <Button
-                className="test"
                 color="secondary"
                 variant="outlined"
-                onClick={() => navigate(`../deck/${name}`)}
+                onClick={() => navigate(`..`)}
               >
                 Back
               </Button>

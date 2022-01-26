@@ -17,13 +17,16 @@ export default function DecksPanel({ children }) {
   //   zniemia (jest zdefiniowana od razu)
   const [decks, setDecks] = useState(null);
 
-  useEffect(() => {
+  function getDecks() {
     fetch("/api/deck/")
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         setDecks(data);
       });
+  }
+  useEffect(() => {
+    getDecks();
   }, []);
 
   return (
@@ -31,6 +34,13 @@ export default function DecksPanel({ children }) {
       <Typography variant="h4" gutterBottom component="div">
         Decks
       </Typography>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => navigate(`/deck`)}
+      >
+        new deck
+      </Button>
       <List>
         {decks &&
           decks.map((deck) => (
@@ -49,7 +59,15 @@ export default function DecksPanel({ children }) {
               <Button
                 color="secondary"
                 variant="outlined"
-                onClick={() => console.log("implement deletion")}
+                onClick={() => {
+                  fetch(`../api/deck/${deck.name}`, { method: "DELETE" }).then(
+                    (response) => {
+                      if (response.ok) {
+                        getDecks();
+                      }
+                    }
+                  );
+                }}
               >
                 Delete
               </Button>
